@@ -12,7 +12,7 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping(value = "/getUsers")
+    @GetMapping("/getUsers")
     public List<User> getUsers() {
         return userRepository.findAll();
     }

@@ -1,14 +1,11 @@
 package com.chatbot.disertatiedb.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
-@Entity
+@Entity(name = "User")
 @Table(name = "users")
 public class User {
     @Id
@@ -17,14 +14,19 @@ public class User {
     private Integer id;
     @Column
     private String email;
-    @Column(name = "device_id")
-    private String deviceId;
+
+
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Device> deviceList = new ArrayList<>();
 
     public User() {}
 
-    public User(String email, String deviceId) {
+    public User(String email) {
         this.email = email;
-        this.deviceId = deviceId;
     }
 
     public Integer getId() {
@@ -43,11 +45,13 @@ public class User {
         this.email = email;
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public void addDevice(Device device) {
+        deviceList.add(device);
+        device.setUser(this);
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void removeDevice(Device device) {
+        deviceList.remove(device);
+        device.setUser(null);
     }
 }
