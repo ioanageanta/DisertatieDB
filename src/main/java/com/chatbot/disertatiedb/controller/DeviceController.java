@@ -20,4 +20,9 @@ public class DeviceController {
     public void saveDevice(@RequestBody Device device) {
         deviceRepository.save(device);
     }
+
+    @GetMapping("/getDevice/{id}")
+    public boolean isDevicePresent(@PathVariable("id") String id) {
+        return deviceRepository.findDevice(id) != null;
+    }
 }
