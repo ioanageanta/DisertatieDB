@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Table(name = "devices")
 public class Device {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
     private Integer id;
     @Column(name = "android_id")
