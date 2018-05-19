@@ -1,18 +1,21 @@
 package com.chatbot.disertatiedb.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity(name = "Device")
 @Table(name = "devices")
 public class Device {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
     private Integer id;
     @Column(name = "android_id")
     private String androidId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -55,9 +58,10 @@ public class Device {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Device )) return false;
+        if (!(o instanceof Device)) return false;
         return id != null && id.equals(((Device) o).id);
     }
+
     @Override
     public int hashCode() {
         return 31;

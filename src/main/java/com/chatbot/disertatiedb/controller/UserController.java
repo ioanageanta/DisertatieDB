@@ -5,7 +5,9 @@ import com.chatbot.disertatiedb.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -23,7 +25,11 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    public void saveUser(@RequestBody User user) {
-        userRepository.save(user);
+    public User saveUser(@RequestBody User user) {
+        Optional.ofNullable(user.getDeviceList())
+                .orElse(new ArrayList<>())
+                .forEach(device -> device.setUser(user));
+
+        return userRepository.save(user);
     }
 }

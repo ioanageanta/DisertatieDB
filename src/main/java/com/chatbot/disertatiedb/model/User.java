@@ -1,7 +1,8 @@
 package com.chatbot.disertatiedb.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -10,20 +11,20 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
+    @Column(name = "user_id")
     private Integer id;
     @Column
     private String email;
 
-
+    @JsonManagedReference
     @OneToMany(
             mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<Device> deviceList = new ArrayList<>();
+            cascade = CascadeType.PERSIST,
+            orphanRemoval = true)
+    private List<Device> deviceList;
 
-    public User() {}
+    public User() {
+    }
 
     public User(String email) {
         this.email = email;
@@ -45,13 +46,11 @@ public class User {
         this.email = email;
     }
 
-    public void addDevice(Device device) {
-        deviceList.add(device);
-        device.setUser(this);
+    public List<Device> getDeviceList() {
+        return deviceList;
     }
 
-    public void removeDevice(Device device) {
-        deviceList.remove(device);
-        device.setUser(null);
+    public void setDeviceList(List<Device> deviceList) {
+        this.deviceList = deviceList;
     }
 }
